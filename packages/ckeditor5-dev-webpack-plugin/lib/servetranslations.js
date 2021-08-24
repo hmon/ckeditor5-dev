@@ -36,6 +36,9 @@ module.exports = function serveTranslations( compiler, options, translationServi
 
 	// Provides translateSource function for the `translatesourceloader` loader.
 	const translateSource = ( source, sourceFile ) => translationService.translateSource( source, sourceFile );
+	
+	// A set of unique messages that prevents message duplications.
+	const uniqueMessages = new Set();
 
 	// Watch for warnings and errors during translation process.
 	translationService.on( 'error', emitError );
@@ -141,9 +144,6 @@ module.exports = function serveTranslations( compiler, options, translationServi
 			}
 		} );
 	} );
-
-	// A set of unique messages that prevents message duplications.
-	const uniqueMessages = new Set();
 
 	function emitError( error ) {
 		if ( uniqueMessages.has( error ) ) {
